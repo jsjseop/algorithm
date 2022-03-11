@@ -12,30 +12,33 @@ public class _1874 {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int n = Integer.parseInt(br.readLine());
 		
-		int size = 0;
+		int top = 0;
 		Stack<Integer> stack = new Stack<Integer>();
 		StringBuilder sb = new StringBuilder();
 		
-		for(int i=0; i<n; i++) {
+		while(n-- > 0) {
 			int input = Integer.parseInt(br.readLine());
 			
-			if(size > input) {
+			//입력값이 스택의 top값보다 클 경우 -> input값까지 push
+			if(input > top) {
+				for(int j=top; j<input; j++) {
+					stack.push(j+1);
+					sb.append("+").append("\n");
+				}
+				//top값을 변경
+				top = input;
+			}
+			
+			//스택의 top값과 입력값이 같을 경우 -> pop
+			if(stack.peek() == input) {
+				stack.pop();
+				sb.append("-").append("\n");
+			// 스택의 top값과 입력값이 다를 경우 -> 종료
+			} else {
+				//sb 초기화
+				sb.setLength(0);
 				sb.append("NO");
 				break;
-			}else {
-				if(size < input) {
-					while(size < input) {
-						size++;
-						stack.push(size);
-						sb.append("+").append("\n");
-					}
-				}
-				
-				if(size == input) {
-					stack.pop();
-					size--;
-					sb.append("-").append("\n");
-				}
 			}
 		}
 		
