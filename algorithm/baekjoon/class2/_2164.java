@@ -3,29 +3,32 @@ package class2;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
 
-public class Test {
+public class _2164 {
 
 	public static void main(String[] args) throws IOException {
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());
+		br.close();
 		
-		boolean[] arr =new boolean[2001];
-		
+		Queue<Integer> q = new LinkedList<Integer>();
 		for(int i=0; i<N; i++) {
-			arr[Integer.parseInt(br.readLine()) + 1000] = true;
+			q.add(i+1);
 		}
 		
-		StringBuilder sb = new StringBuilder();
-		for(int i=0; i<arr.length; i++) {
-			if(arr[i]) {
-				sb.append(i-1000).append("\n");
+		while(q.size() > 1) {
+			if(q.size() == 2) {
+				q.poll();
+				break;
 			}
+			q.poll();
+			q.add(q.poll());
 		}
 		
-		System.out.println(sb);
-		
+		System.out.print(q.peek());
 	}
 
 }

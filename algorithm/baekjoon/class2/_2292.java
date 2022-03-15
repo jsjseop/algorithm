@@ -4,28 +4,27 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Test {
+// 벌집
+public class _2292 {
 
 	public static void main(String[] args) throws IOException {
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());
+		br.close();
 		
-		boolean[] arr =new boolean[2001];
+		int start = 1;
+		int count = 0;
 		
-		for(int i=0; i<N; i++) {
-			arr[Integer.parseInt(br.readLine()) + 1000] = true;
-		}
-		
-		StringBuilder sb = new StringBuilder();
-		for(int i=0; i<arr.length; i++) {
-			if(arr[i]) {
-				sb.append(i-1000).append("\n");
+		while(true) {
+			start += count*6;
+			if(start >= N) {
+				break;
 			}
+			count++;
 		}
 		
-		System.out.println(sb);
-		
+		System.out.println(count+1);
 	}
 
 }
