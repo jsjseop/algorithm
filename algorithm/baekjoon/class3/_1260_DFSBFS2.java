@@ -41,7 +41,8 @@ public class _1260_DFSBFS2 {
 			list[b].add(a);
 		}
 		
-		for(int i=1; i<N; i++) {
+		// 인접리스트는 정렬을 해주어야 한다.
+		for(int i=1; i<=N; i++) {
 			Collections.sort(list[i]);
 		}
 		
@@ -62,9 +63,9 @@ public class _1260_DFSBFS2 {
 		visited[v] = true;
 		sb.append(v).append(" ");
 		
-		for(int i=1; i<list.length; i++) {
-			if(visited[i] == false) {
-				dfs(i);
+		for(int val : list[v]) {
+			if(visited[val] == false) {
+				dfs(val);
 			}
 		}
 		
@@ -83,10 +84,10 @@ public class _1260_DFSBFS2 {
 			int temp = q.poll();
 			sb.append(temp).append(" ");
 			
-			for(int i=1; i<list.length; i++) {
-				if(visited[i] == false) {
-					q.offer(i);
-					visited[i] = true;
+			for(int val : list[temp]) {
+				if(visited[val] == false) {
+					q.offer(val);
+					visited[val] = true;
 				}
 			}
 		}
