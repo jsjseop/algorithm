@@ -3,32 +3,30 @@ package class3;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class _1389_케빈베이컨의6단계법칙 {
-
-	static int N;
-	static List<Integer>[] list;
-	static boolean[][] check;
 	
 	public static void main(String[] args) throws IOException {
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		
-		N = Integer.parseInt(st.nextToken());
+		int N = Integer.parseInt(st.nextToken());
 		int M = Integer.parseInt(st.nextToken());
+
+		int INF = 10000000;
+		int[][] arr = new int[N+1][N+1];
 		
-		list = new List[N+1];
-		check = new boolean[N+1][N+1];
-		
+		// 자신에서 자신으로 가는 경로는 0으로
+		// 나머지는 모두 INF로 초기화한다
 		for(int i=1; i<=N; i++) {
-			list[i] = new ArrayList<>();
+			for(int j=1; j<=N; j++) {
+				arr[i][j] = INF;
+				if(i == j) {
+					arr[i][j] = 0;
+				}
+			}
 		}
 		
 		for(int i=0; i<M; i++) {
@@ -36,54 +34,40 @@ public class _1389_케빈베이컨의6단계법칙 {
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
 			
-			list[a].add(b);
-			list[b].add(a);
+			// 양방향 연결
+			arr[a][b] = 1;
+			arr[b][a] = 1;
 		}
 		
-		int[] arr = new int[N+1];
-		
-		for(int i=1; i<=N; i++) {
-			arr[i] = bfs(i);
-		}
-		
-		Arrays.sort(arr);
-		
-		System.out.println(arr[1]);
-
-	}
-	
-	public static int bfs(int num) {
-		
-		Queue<Integer> q = new LinkedList<>();
-		int sum = 0;
-		
-		for(int i=1; i<=N; i++) {
-			if(num == i) continue;
-			check[num][num] = true;
-			q.add(num);
-			boolean isEnd = false;
-			
-			while(true) {
-				int temp = q.poll();
-				sum++;
-				
-				for(int val : list[temp]) {
-					if(check[num][val] == false) {
-						if(val == i) {
-							isEnd = true;
-							break;
-						}
-						q.add(val);
-						check[num][val] = true;
+		// 플로이드 와샬을 이용해 최단거리를 구한다
+		for(int k=1; k<=N; k++) {
+			for(int i=1; i<=N; i++) {
+				for(int j=1; j<=N; j++) {
+					if(arr[i][k] + arr[k][j] < arr[i][j]) {
+						arr[i][j] = arr[i][k] + arr[k][j];
 					}
 				}
-				if(isEnd) break;
-				sum--;
 			}
 		}
 		
-		return sum;
+		int min = Integer.MAX_VALUE;
+		int num = 0;
 		
+		// 케빈 베이컨의 최솟값을 찾는다
+		for(int i=1; i<=N; i++) {
+			int sum = 0;
+			for(int j=1; j<=N; j++) {
+				sum += arr[i][j];
+			}
+
+			if(sum < min) {
+				min = sum;
+				num = i;
+			}
+		}
+		
+		System.out.println(num);
+
 	}
 
 }
